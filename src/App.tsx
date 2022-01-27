@@ -2,8 +2,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // 导入组件
-import Layout from './pages/Layout'
-import Login from './pages/Login'
+import Layout from '@/pages/Layout'
+import Login from '@/pages/Login'
 
 // 导入样式文件
 import './App.scss'
