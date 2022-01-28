@@ -44,7 +44,7 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^6.4.3",
+    "@craco/craco": "7.0.0-alpha.0",
     "postcss-px-to-viewport": "^1.1.1"
   }
 }

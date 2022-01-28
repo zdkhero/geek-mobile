@@ -1,6 +1,6 @@
 const path = require('path')
+// 将 px 转化为 vw 工具包
 const pxToViewport = require('postcss-px-to-viewport')
-
 const vw = pxToViewport({
   // 视口宽度，一般就是 375（ 设计稿一般采用二倍稿，宽度为 375 ）
   viewportWidth: 375
