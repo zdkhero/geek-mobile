@@ -3,8 +3,8 @@ import store from '@/store'
 import { Toast } from 'antd-mobile'
 
 const http = axios.create({
-  // baseURL: 'http://geek.itheima.net/v1_0',
-  baseURL: process.env.REACT_APP_URL,
+  baseURL: 'http://geek.itheima.net/v1_0',
+  // baseURL: process.env.REACT_APP_URL,
   timeout: 5000
 })
 
@@ -30,7 +30,7 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
   (res) => {
-    return res?.data?.data || res
+    return res
   },
   (error) => {
     if (!error.response) {

@@ -1,8 +1,22 @@
+import { useDispatch } from 'react-redux'
 import { Button, NavBar, Form, Input } from 'antd-mobile'
 
 import styles from './index.module.scss'
+import { login } from '@/store/actions/login'
+
+// 声明类型
+type LoginForm = {
+  mobile: string
+  code: string
+}
 
 const Login = () => {
+  const dispatch = useDispatch()
+  // 获取登录表单数据
+  const onFinish = (values: LoginForm) => {
+    dispatch(login(values))
+  }
+
   return (
     <div className={styles.root}>
       <NavBar></NavBar>
@@ -10,8 +24,9 @@ const Login = () => {
       <div className="login-form">
         <h2 className="title">账号登录</h2>
 
-        <Form validateTrigger={['onBlur']}>
+        <Form onFinish={onFinish} validateTrigger={['onBlur']}>
           <Form.Item
+            name="mobile"
             className="login-item"
             validateTrigger="onBlur"
             rules={[
@@ -26,6 +41,7 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item
+            name="code"
             className="login-item"
             rules={[{ required: true, message: '请输入验证码' }]}
             validateTrigger="onBlur"
