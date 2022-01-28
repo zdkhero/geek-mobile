@@ -1,8 +1,9 @@
 import { useDispatch } from 'react-redux'
-import { Button, NavBar, Form, Input } from 'antd-mobile'
+import { useNavigate } from 'react-router-dom'
+import { Button, NavBar, Form, Input, Toast } from 'antd-mobile'
 
-import styles from './index.module.scss'
 import { login } from '@/store/actions/login'
+import styles from './index.module.scss'
 
 // 声明类型
 type LoginForm = {
@@ -12,9 +13,21 @@ type LoginForm = {
 
 const Login = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   // 获取登录表单数据
-  const onFinish = (values: LoginForm) => {
-    dispatch(login(values))
+  const onFinish = async (values: LoginForm) => {
+    await dispatch(login(values))
+
+    // 登录成功提示
+    Toast.show({
+      content: '登录成功',
+      duration: 600,
+      afterClose: () => {
+        // 返回首页
+        navigate('/', { replace: true })
+      }
+    })
   }
 
   return (
