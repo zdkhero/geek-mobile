@@ -10,12 +10,27 @@ const Login = () => {
       <div className="login-form">
         <h2 className="title">账号登录</h2>
 
-        <Form>
-          <Form.Item className="login-item">
+        <Form validateTrigger={['onBlur']}>
+          <Form.Item
+            className="login-item"
+            validateTrigger="onBlur"
+            rules={[
+              { required: true, message: '请输入手机号' },
+              {
+                pattern: /^1[3-9]\d{9}$/,
+                message: '手机号格式错误'
+              }
+            ]}
+          >
             <Input placeholder="请输入手机号" />
           </Form.Item>
 
-          <Form.Item className="login-item" extra={<span className="code-extra">发送验证码</span>}>
+          <Form.Item
+            className="login-item"
+            rules={[{ required: true, message: '请输入验证码' }]}
+            validateTrigger="onBlur"
+            extra={<span className="code-extra">发送验证码</span>}
+          >
             <Input placeholder="请输入验证码" autoComplete="off" />
           </Form.Item>
 
