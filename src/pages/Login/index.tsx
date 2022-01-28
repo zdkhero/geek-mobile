@@ -4,6 +4,7 @@ import { Button, NavBar, Form, Input, Toast } from 'antd-mobile'
 
 import { login } from '@/store/actions/login'
 import styles from './index.module.scss'
+import { AxiosError } from 'axios'
 
 // 声明类型
 type LoginForm = {
@@ -17,17 +18,30 @@ const Login = () => {
 
   // 获取登录表单数据
   const onFinish = async (values: LoginForm) => {
-    await dispatch(login(values))
+    try {
+      await dispatch(login(values))
 
-    // 登录成功提示
-    Toast.show({
-      content: '登录成功',
-      duration: 600,
-      afterClose: () => {
-        // 返回首页
-        navigate('/', { replace: true })
-      }
-    })
+      // 登录成功提示
+      Toast.show({
+        content: '登录成功',
+        duration: 600,
+        afterClose: () => {
+          // 返回首页
+          navigate('/', { replace: true })
+        }
+      })
+    } catch (e) {
+      // 异常
+      // 如果异步操作失败了，会执行此处的错误处理
+      // 对于登录功能来说，出错了，通常是请求出现了问题
+      // 因此，此处将错误类型转为 AxiosError
+      const error = e as AxiosError<{ message: string }>
+
+      Toast.show({
+        content: error.response?.data?.message,
+        duration: 1000
+      })
+    }
   }
 
   return (
