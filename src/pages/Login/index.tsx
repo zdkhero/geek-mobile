@@ -1,18 +1,32 @@
-import { Button } from 'antd-mobile'
+import { Button, NavBar, Form, Input } from 'antd-mobile'
+
+import styles from './index.module.scss'
 
 const Login = () => {
   return (
-    <div>
-      <p>
-        <svg className="icon" aria-hidden="true">
-          {/* 使用时，只需要将此处的 iconbtn_like_sel 替换为 icon 的名称即可*/}
-          <use xlinkHref="#iconbtn_like_sel"></use>
-        </svg>
-      </p>
-      <Button color="primary">Primary</Button>
-      <Button color="success">Success</Button>
-      <Button color="danger">Danger</Button>
-      <Button color="warning">Warning</Button>
+    <div className={styles.root}>
+      <NavBar></NavBar>
+
+      <div className="login-form">
+        <h2 className="title">账号登录</h2>
+
+        <Form>
+          <Form.Item className="login-item">
+            <Input placeholder="请输入手机号" />
+          </Form.Item>
+
+          <Form.Item className="login-item" extra={<span className="code-extra">发送验证码</span>}>
+            <Input placeholder="请输入验证码" autoComplete="off" />
+          </Form.Item>
+
+          {/* noStyle 表示不提供 Form.Item 自带的样式 */}
+          <Form.Item noStyle>
+            <Button block type="submit" color="primary" className="login-submit">
+              登 录
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   )
 }
