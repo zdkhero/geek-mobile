@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button, NavBar, Form, Input, Toast } from 'antd-mobile'
@@ -5,6 +6,7 @@ import { Button, NavBar, Form, Input, Toast } from 'antd-mobile'
 import { login } from '@/store/actions/login'
 import styles from './index.module.scss'
 import { AxiosError } from 'axios'
+import { InputRef } from 'antd-mobile/es/components/input'
 
 // 声明类型
 type LoginForm = {
@@ -15,6 +17,8 @@ type LoginForm = {
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const mobileRef = useRef<InputRef>(null)
+
   // 创建 form 实例
   const [form] = Form.useForm()
 
@@ -46,6 +50,21 @@ const Login = () => {
     }
   }
 
+  // 获取手机号
+  const onGetCode = () => {
+    // 拿到手机号
+    const mobile = (form.getFieldValue('mobile') ?? '') as string
+
+    // 判断手机号验证是否成功
+    const hasError = form.getFieldError('mobile').length > 0
+
+    if (mobile.trim() === '' || hasError) {
+      return mobileRef.current?.focus()
+    }
+
+    console.log('11')
+  }
+
   return (
     <div className={styles.root}>
       <NavBar></NavBar>
@@ -66,7 +85,7 @@ const Login = () => {
               }
             ]}
           >
-            <Input placeholder="请输入手机号" />
+            <Input placeholder="请输入手机号" ref={mobileRef} />
           </Form.Item>
 
           <Form.Item
@@ -74,7 +93,11 @@ const Login = () => {
             className="login-item"
             rules={[{ required: true, message: '请输入验证码' }]}
             validateTrigger="onBlur"
-            extra={<span className="code-extra">发送验证码</span>}
+            extra={
+              <span className="code-extra" onClick={() => onGetCode()}>
+                发送验证码
+              </span>
+            }
           >
             <Input placeholder="请输入验证码" autoComplete="off" />
           </Form.Item>
