@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button, NavBar, Form, Input, Toast } from 'antd-mobile'
@@ -18,6 +18,8 @@ const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const mobileRef = useRef<InputRef>(null)
+  const [timeLeft, setTimeLeft] = useState(0)
+  const timerRef = useRef(-1)
 
   // 创建 form 实例
   const [form] = Form.useForm()
@@ -63,7 +65,28 @@ const Login = () => {
     }
 
     dispatch(getCode(mobile))
+
+    // 开启倒计时
+    setTimeLeft(5)
+    timerRef.current = window.setInterval(() => {
+      setTimeLeft((timeLeft) => timeLeft - 1)
+    }, 1000)
   }
+
+  // 1. 监听倒计时变化，在倒计时结束时清理定时器
+  useEffect(() => {
+    if (timeLeft === 0) {
+      clearInterval(timerRef.current)
+    }
+  }, [timeLeft])
+
+  // 2. 在组件卸载时清理定时器
+  useEffect(() => {
+    return () => {
+      // 组件卸载时清理定时器
+      clearInterval(timerRef.current)
+    }
+  }, [])
 
   return (
     <div className={styles.root}>
@@ -94,8 +117,10 @@ const Login = () => {
             rules={[{ required: true, message: '请输入验证码' }]}
             validateTrigger="onBlur"
             extra={
-              <span className="code-extra" onClick={() => onGetCode()}>
-                发送验证码
+              // 判断是否开启定时器，没开启绑定事件，开启后去掉事件
+              <span className="code-extra" onClick={timeLeft === 0 ? onGetCode : undefined}>
+                {/* 判断是否开启定时器，没开启展示 发送验证码，开启后展示倒计时 */}
+                {timeLeft === 0 ? '发送验证码' : `${timeLeft}s后重新获取`}
               </span>
             }
           >
