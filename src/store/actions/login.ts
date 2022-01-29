@@ -12,6 +12,7 @@ type LoginResponse = {
   data: Token
 }
 
+// 登录功能
 export const login = (values: LoginParams): RootThunkAction => {
   return async (dispatch) => {
     // 发送数据
@@ -23,5 +24,13 @@ export const login = (values: LoginParams): RootThunkAction => {
     setToken(tokens)
     // 分发 action 将 token 保存到 redux state 中
     dispatch({ type: 'login/token', payload: tokens })
+  }
+}
+
+// 获取验证码
+export const getCode = (mobile: string) => {
+  return async () => {
+    // 注意：验证码是发送到手机上，不对存储到代码中，因此不需要操作 redux
+    await http.get(`/sms/codes/${mobile}`)
   }
 }

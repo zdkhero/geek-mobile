@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button, NavBar, Form, Input, Toast } from 'antd-mobile'
 
-import { login } from '@/store/actions/login'
+import { getCode, login } from '@/store/actions/login'
 import styles from './index.module.scss'
 import { AxiosError } from 'axios'
 import { InputRef } from 'antd-mobile/es/components/input'
@@ -62,7 +62,7 @@ const Login = () => {
       return mobileRef.current?.focus()
     }
 
-    console.log('11')
+    dispatch(getCode(mobile))
   }
 
   return (
