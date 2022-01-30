@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk'
 import store from '@/store'
 
-import { Token } from './data'
+import { Token, User } from './data'
 
 // Redux 应用的状态
 type RootState = ReturnType<typeof store.getState>
@@ -14,12 +14,18 @@ type RootState = ReturnType<typeof store.getState>
 type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
 
 // 项目中所有 action 类型
-type RootAction = LoginAction
+type RootAction = LoginAction | ProfileAction
 
 // 登录相关的 action 类型
 type LoginAction = {
   type: 'login/token'
   payload: Token
+}
+
+// 获取用户信息的 action 类型
+type ProfileAction = {
+  type: 'profile/getUser'
+  payload: User
 }
 
 // 文章相关的 action 类型

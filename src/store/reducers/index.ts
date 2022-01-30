@@ -2,10 +2,12 @@ import { combineReducers } from 'redux'
 
 // 导入登录模块
 import { login } from './login'
+import profile from './profile'
 
 // 根 reducer
 const rootReducer = combineReducers({
-  login
+  login,
+  profile
 })
 
 export default rootReducer
