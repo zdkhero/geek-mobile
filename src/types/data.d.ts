@@ -14,3 +14,14 @@ export type User = {
   fans_count: number
   like_count: number
 }
+
+type ApiResponse<Data> = {
+  message: string
+  data: Data
+}
+
+// 统一处理axios响应类型：
+// login 接口的响应类型
+export type LoginResponse = ApiResponse<Token>
+// 用户信息 接口的响应类型
+export type UserResponse = ApiResponse<User>

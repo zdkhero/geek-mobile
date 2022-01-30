@@ -1,11 +1,6 @@
 import { http } from '@/utils/http'
 import type { RootThunkAction } from '@/types/store'
-import type { User } from '@/types/data'
-
-type UserResponse = {
-  message: string
-  data: User
-}
+import type { UserResponse } from '@/types/data'
 
 // 获取用户信息
 export const getUser = (): RootThunkAction => {

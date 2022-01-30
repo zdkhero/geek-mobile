@@ -1,16 +1,10 @@
-import { Token } from '@/types/data'
+import type { LoginResponse } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import { http } from '@/utils/http'
 import { setToken } from '@/utils/token'
 
 // login 函数的参数类型
 type LoginParams = { mobile: string; code: string }
-
-// login 接口的响应类型
-type LoginResponse = {
-  message: string
-  data: Token
-}
 
 // 登录功能
 export const login = (values: LoginParams): RootThunkAction => {
