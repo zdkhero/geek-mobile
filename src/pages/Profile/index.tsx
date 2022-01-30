@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
@@ -19,6 +19,7 @@ const Profile = () => {
 
   return (
     <div className={styles.root}>
+      <Outlet></Outlet>
       <div className="profile">
         {/* 个人信息 */}
         <div className="user-info">
