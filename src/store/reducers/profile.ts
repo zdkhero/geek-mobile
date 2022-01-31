@@ -24,6 +24,14 @@ const profile = (state = initialState, action: ProfileAction) => {
         ...state,
         userProfile: action.payload
       }
+    case 'profile/update':
+      return {
+        ...state,
+        userProfile: {
+          ...state.userProfile,
+          ...action.payload
+        }
+      }
     default:
       return state
   }

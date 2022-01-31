@@ -32,5 +32,9 @@ type ProfileAction =
       type: 'profile/getUserProfile'
       payload: UserProfile
     }
+  | {
+      type: 'profile/update'
+      payload: Partial<UserProfile>
+    }
 
 // 文章相关的 action 类型

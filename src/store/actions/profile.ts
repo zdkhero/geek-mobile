@@ -1,6 +1,6 @@
 import { http } from '@/utils/http'
 import type { RootThunkAction } from '@/types/store'
-import type { UserResponse, UserProfileResponse } from '@/types/data'
+import type { UserResponse, UserProfileResponse, UserProfile } from '@/types/data'
 
 // 获取用户信息
 export const getUser = (): RootThunkAction => {
@@ -22,5 +22,15 @@ export const getUserProfile = (): RootThunkAction => {
   return async (dispatch) => {
     const res = await http.get<UserProfileResponse>('/user/profile')
     dispatch({ type: 'profile/getUserProfile', payload: res.data.data })
+  }
+}
+
+// 更新用户昵称
+export const updateUserProfile = (userProfile: Partial<UserProfile>): RootThunkAction => {
+  return async (dispatch) => {
+    await http.patch('/user/profile', userProfile)
+
+    // 分发 action 以更新用户昵称
+    dispatch({ type: 'profile/update', payload: userProfile })
   }
 }

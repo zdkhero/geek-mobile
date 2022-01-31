@@ -1,23 +1,44 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserProfile } from '@/store/actions/profile'
+import { getUserProfile, updateUserProfile } from '@/store/actions/profile'
 import { RootState } from '@/types/store'
-import { Button, List, DatePicker, NavBar } from 'antd-mobile'
+import { Button, List, DatePicker, NavBar, Popup, Toast } from 'antd-mobile'
 import classNames from 'classnames'
 
 import styles from './index.module.scss'
+import EditInput from './components/EditInput'
 
 const Item = List.Item
 
 const ProfileEdit = () => {
   const dispatch = useDispatch()
   const { userProfile } = useSelector((state: RootState) => state.profile)
+  const [inputVisible, setInputVisible] = useState(false)
 
   const { photo, name, intro, gender, birthday } = userProfile
 
   useEffect(() => {
     dispatch(getUserProfile())
   }, [dispatch])
+
+  // 子组件 navbar 点击箭头，隐藏编辑昵称
+  const onInputHide = () => {
+    setInputVisible(false)
+  }
+
+  const onUpdateName = (name: string) => {
+    // 分发 action
+    dispatch(updateUserProfile({ name }))
+
+    // 给用户提示
+    Toast.show({
+      content: '更新成功',
+      duration: 1000
+    })
+
+    // 隐藏弹层
+    onInputHide()
+  }
 
   return (
     <div className={styles.root}>
@@ -45,7 +66,7 @@ const ProfileEdit = () => {
             >
               头像
             </Item>
-            <Item arrow extra={name || '黑马先锋'}>
+            <Item arrow extra={name || '黑马先锋'} onClick={() => setInputVisible(true)}>
               昵称
             </Item>
             <Item arrow extra={<span className={classNames('intro', 'normal')}>{intro || '未填写'}</span>}>
@@ -78,6 +99,11 @@ const ProfileEdit = () => {
           </Button>
         </div>
       </div>
+
+      {/* 弹框组件 */}
+      <Popup visible={inputVisible} position="right" bodyStyle={{ width: '100%' }}>
+        <EditInput value={name} onClose={onInputHide} onUpdateName={onUpdateName} />
+      </Popup>
     </div>
   )
 }
