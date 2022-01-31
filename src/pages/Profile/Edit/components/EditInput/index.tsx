@@ -4,12 +4,13 @@ import { useState } from 'react'
 import styles from './index.module.scss'
 
 type Props = {
-  onClose: () => void
   value: string
+  type: '' | 'name' | 'intro'
+  onClose: () => void
   onUpdateName: (value: string) => void
 }
 
-const EditInput = ({ onClose, value, onUpdateName }: Props) => {
+const EditInput = ({ value, type, onUpdateName, onClose }: Props) => {
   const [inputValue, setInputValue] = useState(value)
 
   const onSave = () => {

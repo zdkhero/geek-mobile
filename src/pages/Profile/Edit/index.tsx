@@ -10,10 +10,20 @@ import EditInput from './components/EditInput'
 
 const Item = List.Item
 
+type InputPopup = {
+  type: '' | 'name' | 'intro'
+  value: string
+  visible: boolean
+}
+
 const ProfileEdit = () => {
   const dispatch = useDispatch()
   const { userProfile } = useSelector((state: RootState) => state.profile)
-  const [inputVisible, setInputVisible] = useState(false)
+  const [inputPopup, setinputPopup] = useState<InputPopup>({
+    type: '', // type 属性，用来标识是昵称还是简介
+    value: '', // 当前值
+    visible: false // 展示或隐藏弹框
+  })
 
   const { photo, name, intro, gender, birthday } = userProfile
 
@@ -23,7 +33,19 @@ const ProfileEdit = () => {
 
   // 子组件 navbar 点击箭头，隐藏编辑昵称
   const onInputHide = () => {
-    setInputVisible(false)
+    setinputPopup({
+      type: '',
+      value: '',
+      visible: false
+    })
+  }
+
+  const onInputShow = () => {
+    setinputPopup({
+      type: 'name',
+      value: name,
+      visible: true
+    })
   }
 
   const onUpdateName = (name: string) => {
@@ -66,7 +88,7 @@ const ProfileEdit = () => {
             >
               头像
             </Item>
-            <Item arrow extra={name || '黑马先锋'} onClick={() => setInputVisible(true)}>
+            <Item arrow extra={name || '黑马先锋'} onClick={onInputShow}>
               昵称
             </Item>
             <Item arrow extra={<span className={classNames('intro', 'normal')}>{intro || '未填写'}</span>}>
@@ -101,8 +123,14 @@ const ProfileEdit = () => {
       </div>
 
       {/* 弹框组件 */}
-      <Popup visible={inputVisible} position="right" bodyStyle={{ width: '100%' }}>
-        <EditInput value={name} onClose={onInputHide} onUpdateName={onUpdateName} />
+      <Popup visible={inputPopup.visible} position="right" bodyStyle={{ width: '100%' }}>
+        <EditInput
+          key={inputPopup.type}
+          value={name}
+          type={inputPopup.type}
+          onClose={onInputHide}
+          onUpdateName={onUpdateName}
+        />
       </Popup>
     </div>
   )
