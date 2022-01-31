@@ -1,3 +1,7 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserProfile } from '@/store/actions/profile'
+import { RootState } from '@/types/store'
 import { Button, List, DatePicker, NavBar } from 'antd-mobile'
 import classNames from 'classnames'
 
@@ -6,6 +10,15 @@ import styles from './index.module.scss'
 const Item = List.Item
 
 const ProfileEdit = () => {
+  const dispatch = useDispatch()
+  const { userProfile } = useSelector((state: RootState) => state.profile)
+
+  const { photo, name, intro, gender, birthday } = userProfile
+
+  useEffect(() => {
+    dispatch(getUserProfile())
+  }, [dispatch])
+
   return (
     <div className={styles.root}>
       <div className="content">
@@ -25,26 +38,26 @@ const ProfileEdit = () => {
             <Item
               extra={
                 <span className="avatar-wrapper">
-                  <img width={24} height={24} src={'http://toutiao.itheima.net/images/user_head.jpg'} alt="" />
+                  <img width={24} height={24} src={photo || 'http://toutiao.itheima.net/images/user_head.jpg'} alt="" />
                 </span>
               }
               arrow
             >
               头像
             </Item>
-            <Item arrow extra={'黑马先锋'}>
+            <Item arrow extra={name || '黑马先锋'}>
               昵称
             </Item>
-            <Item arrow extra={<span className={classNames('intro', 'normal')}>{'未填写'}</span>}>
+            <Item arrow extra={<span className={classNames('intro', 'normal')}>{intro || '未填写'}</span>}>
               简介
             </Item>
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={'男'}>
+            <Item arrow extra={gender || '男'}>
               性别
             </Item>
-            <Item arrow extra={'1999-9-9'}>
+            <Item arrow extra={birthday || '1999-9-9'}>
               生日
             </Item>
           </List>

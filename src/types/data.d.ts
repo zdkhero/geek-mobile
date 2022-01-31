@@ -15,6 +15,17 @@ export type User = {
   like_count: number
 }
 
+// 个人详细信息
+export type UserProfile = {
+  id: string
+  photo: string
+  name: string
+  mobile: string
+  gender: number
+  birthday: string
+  intro: string
+}
+
 type ApiResponse<Data> = {
   message: string
   data: Data
@@ -25,3 +36,5 @@ type ApiResponse<Data> = {
 export type LoginResponse = ApiResponse<Token>
 // 用户信息 接口的响应类型
 export type UserResponse = ApiResponse<User>
+// 个人信息 接口的响应类型
+export type UserProfileResponse = ApiResponse<UserProfile>

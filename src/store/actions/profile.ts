@@ -1,6 +1,6 @@
 import { http } from '@/utils/http'
 import type { RootThunkAction } from '@/types/store'
-import type { UserResponse } from '@/types/data'
+import type { UserResponse, UserProfileResponse } from '@/types/data'
 
 // 获取用户信息
 export const getUser = (): RootThunkAction => {
@@ -14,5 +14,13 @@ export const getUser = (): RootThunkAction => {
       type: 'profile/getUser',
       payload: data
     })
+  }
+}
+
+// 获取个人信息
+export const getUserProfile = (): RootThunkAction => {
+  return async (dispatch) => {
+    const res = await http.get<UserProfileResponse>('/user/profile')
+    dispatch({ type: 'profile/getUserProfile', payload: res.data.data })
   }
 }

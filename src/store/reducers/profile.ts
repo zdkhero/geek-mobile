@@ -1,12 +1,14 @@
-import type { User } from '@/types/data'
+import type { User, UserProfile } from '@/types/data'
 import { ProfileAction } from '@/types/store'
 
 type ProfileState = {
   user: User
+  userProfile: UserProfile
 }
 
 const initialState = {
-  user: {}
+  user: {},
+  userProfile: {}
 } as ProfileState
 
 const profile = (state = initialState, action: ProfileAction) => {
@@ -17,7 +19,11 @@ const profile = (state = initialState, action: ProfileAction) => {
         ...state,
         user: action.payload
       }
-
+    case 'profile/getUserProfile':
+      return {
+        ...state,
+        userProfile: action.payload
+      }
     default:
       return state
   }

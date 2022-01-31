@@ -23,9 +23,14 @@ type LoginAction = {
 }
 
 // 获取用户信息的 action 类型
-type ProfileAction = {
-  type: 'profile/getUser'
-  payload: User
-}
+type ProfileAction =
+  | {
+      type: 'profile/getUser'
+      payload: User
+    }
+  | {
+      type: 'profile/getUserProfile'
+      payload: UserProfile
+    }
 
 // 文章相关的 action 类型
