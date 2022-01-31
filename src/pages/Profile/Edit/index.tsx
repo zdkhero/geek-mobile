@@ -7,6 +7,7 @@ import classNames from 'classnames'
 
 import styles from './index.module.scss'
 import EditInput from './components/EditInput'
+import EditList from './components/EditList'
 
 const Item = List.Item
 
@@ -16,17 +17,15 @@ type InputPopup = {
   visible: boolean
 }
 
+type ListPopup = {
+  type: '' | 'gender' | 'photo'
+  visible: boolean
+}
+
 const ProfileEdit = () => {
   const dispatch = useDispatch()
   const { userProfile } = useSelector((state: RootState) => state.profile)
-  const [inputPopup, setInputPopup] = useState<InputPopup>({
-    type: '', // type 属性，用来标识是昵称还是简介
-    value: '', // 当前值
-    visible: false // 展示或隐藏弹框
-  })
-
   let { photo, name, intro, gender, birthday } = userProfile
-
   if (intro === null) {
     intro = ''
   }
@@ -34,6 +33,32 @@ const ProfileEdit = () => {
   useEffect(() => {
     dispatch(getUserProfile())
   }, [dispatch])
+
+  // 控制姓名和资料的状态
+  const [inputPopup, setInputPopup] = useState<InputPopup>({
+    type: '', // type 属性，用来标识是昵称还是简介
+    value: '', // 当前值
+    visible: false // 展示或隐藏弹框
+  })
+
+  // 控制性别和照片的状态
+  const [listPopup, setListPopup] = useState<ListPopup>({
+    type: '',
+    visible: false
+  })
+
+  const onGenderShow = () => {
+    setListPopup({
+      type: 'gender',
+      visible: true
+    })
+  }
+  const onGenderHide = () => {
+    setListPopup({
+      type: '',
+      visible: false
+    })
+  }
 
   // 子组件 navbar 点击箭头，隐藏编辑昵称
   const onInputHide = () => {
@@ -113,7 +138,7 @@ const ProfileEdit = () => {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={gender || '男'}>
+            <Item arrow extra={gender || '男'} onClick={onGenderShow}>
               性别
             </Item>
             <Item arrow extra={birthday || '1999-9-9'}>
@@ -147,6 +172,10 @@ const ProfileEdit = () => {
           onClose={onInputHide}
           onUpdateProfile={onUpdateProfile}
         />
+      </Popup>
+
+      <Popup visible={listPopup.visible} onMaskClick={onGenderHide}>
+        <EditList onClose={onGenderHide} />
       </Popup>
     </div>
   )
