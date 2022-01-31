@@ -77,7 +77,7 @@ const ProfileEdit = () => {
     })
   }
 
-  const onUpdateProfile = async (type: 'name' | 'intro', value: string) => {
+  const onUpdateProfile = async (type: 'name' | 'intro' | 'gender' | 'photo', value: string) => {
     // 分发 action
     await dispatch(updateUserProfile({ [type]: value }))
 
@@ -89,6 +89,7 @@ const ProfileEdit = () => {
 
     // 隐藏弹层
     onInputHide()
+    onGenderHide()
   }
 
   const onIntroShow = () => {
@@ -138,7 +139,7 @@ const ProfileEdit = () => {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={gender || '男'} onClick={onGenderShow}>
+            <Item arrow extra={gender + '' === '0' ? '男' : '女'} onClick={onGenderShow}>
               性别
             </Item>
             <Item arrow extra={birthday || '1999-9-9'}>
@@ -175,7 +176,7 @@ const ProfileEdit = () => {
       </Popup>
 
       <Popup visible={listPopup.visible} onMaskClick={onGenderHide}>
-        <EditList onClose={onGenderHide} />
+        <EditList type={listPopup.type} onClose={onGenderHide} onUpdateProfile={onUpdateProfile} />
       </Popup>
     </div>
   )
