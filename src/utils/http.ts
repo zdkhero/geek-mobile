@@ -3,7 +3,7 @@ import store from '@/store'
 import { Toast } from 'antd-mobile'
 
 const http = axios.create({
-  baseURL: 'http://geek.itheima.net/v1_0',
+  baseURL: 'http://toutiao.itheima.net/v1_0',
   // baseURL: process.env.REACT_APP_URL,
   timeout: 5000
 })

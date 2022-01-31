@@ -25,7 +25,11 @@ const ProfileEdit = () => {
     visible: false // 展示或隐藏弹框
   })
 
-  const { photo, name, intro, gender, birthday } = userProfile
+  let { photo, name, intro, gender, birthday } = userProfile
+
+  if (intro === null) {
+    intro = ''
+  }
 
   useEffect(() => {
     dispatch(getUserProfile())
@@ -48,9 +52,9 @@ const ProfileEdit = () => {
     })
   }
 
-  const onUpdateName = (name: string) => {
+  const onUpdateProfile = async (type: 'name' | 'intro', value: string) => {
     // 分发 action
-    dispatch(updateUserProfile({ name }))
+    await dispatch(updateUserProfile({ [type]: value }))
 
     // 给用户提示
     Toast.show({
@@ -138,10 +142,10 @@ const ProfileEdit = () => {
       <Popup visible={inputPopup.visible} position="right" bodyStyle={{ width: '100%' }}>
         <EditInput
           key={inputPopup.type}
-          value={name}
           type={inputPopup.type}
+          value={inputPopup.value}
           onClose={onInputHide}
-          onUpdateName={onUpdateName}
+          onUpdateProfile={onUpdateProfile}
         />
       </Popup>
     </div>
