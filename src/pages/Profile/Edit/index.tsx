@@ -19,7 +19,7 @@ type InputPopup = {
 const ProfileEdit = () => {
   const dispatch = useDispatch()
   const { userProfile } = useSelector((state: RootState) => state.profile)
-  const [inputPopup, setinputPopup] = useState<InputPopup>({
+  const [inputPopup, setInputPopup] = useState<InputPopup>({
     type: '', // type 属性，用来标识是昵称还是简介
     value: '', // 当前值
     visible: false // 展示或隐藏弹框
@@ -33,7 +33,7 @@ const ProfileEdit = () => {
 
   // 子组件 navbar 点击箭头，隐藏编辑昵称
   const onInputHide = () => {
-    setinputPopup({
+    setInputPopup({
       type: '',
       value: '',
       visible: false
@@ -41,7 +41,7 @@ const ProfileEdit = () => {
   }
 
   const onInputShow = () => {
-    setinputPopup({
+    setInputPopup({
       type: 'name',
       value: name,
       visible: true
@@ -60,6 +60,14 @@ const ProfileEdit = () => {
 
     // 隐藏弹层
     onInputHide()
+  }
+
+  const onIntroShow = () => {
+    setInputPopup({
+      type: 'intro',
+      value: intro,
+      visible: true
+    })
   }
 
   return (
@@ -91,7 +99,11 @@ const ProfileEdit = () => {
             <Item arrow extra={name || '黑马先锋'} onClick={onInputShow}>
               昵称
             </Item>
-            <Item arrow extra={<span className={classNames('intro', 'normal')}>{intro || '未填写'}</span>}>
+            <Item
+              onClick={onIntroShow}
+              arrow
+              extra={<span className={classNames('intro', 'normal')}>{intro || '未填写'}</span>}
+            >
               简介
             </Item>
           </List>
