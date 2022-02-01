@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserProfile, updateUserProfile } from '@/store/actions/profile'
+import { getUserProfile, updateUserPhoto, updateUserProfile } from '@/store/actions/profile'
 import { RootState } from '@/types/store'
 import { Button, List, DatePicker, NavBar, Popup, Toast } from 'antd-mobile'
 import classNames from 'classnames'
@@ -24,7 +24,9 @@ type ListPopup = {
 
 const ProfileEdit = () => {
   const dispatch = useDispatch()
+  const fileRef = useRef<HTMLInputElement>(null)
   const { userProfile } = useSelector((state: RootState) => state.profile)
+
   let { photo, name, intro, gender, birthday } = userProfile
   if (intro === null) {
     intro = ''
@@ -53,6 +55,7 @@ const ProfileEdit = () => {
       visible: true
     })
   }
+
   const onGenderHide = () => {
     setListPopup({
       type: '',
@@ -78,18 +81,24 @@ const ProfileEdit = () => {
   }
 
   const onUpdateProfile = async (type: 'name' | 'intro' | 'gender' | 'photo', value: string) => {
-    // 分发 action
-    await dispatch(updateUserProfile({ [type]: value }))
+    if (type === 'photo') {
+      // 单独处理修改头像的逻辑 - 来弹窗让用户选择图片
+      // console.log('修改头像了')
+      fileRef.current?.click()
+    } else {
+      // 分发 action
+      await dispatch(updateUserProfile({ [type]: value }))
 
-    // 给用户提示
-    Toast.show({
-      content: '更新成功',
-      duration: 1000
-    })
+      // 给用户提示
+      Toast.show({
+        content: '更新成功',
+        duration: 1000
+      })
 
-    // 隐藏弹层
-    onInputHide()
-    onGenderHide()
+      // 隐藏弹层
+      onInputHide()
+      onGenderHide()
+    }
   }
 
   const onIntroShow = () => {
@@ -98,6 +107,23 @@ const ProfileEdit = () => {
       value: intro,
       visible: true
     })
+  }
+
+  const onPhotoShow = () => {
+    setListPopup({
+      type: 'photo',
+      visible: true
+    })
+  }
+
+  const onChangePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const photoData = new FormData()
+    photoData.append('photo', file)
+
+    await dispatch(updateUserPhoto(photoData))
+    onGenderHide()
   }
 
   return (
@@ -123,6 +149,7 @@ const ProfileEdit = () => {
                 </span>
               }
               arrow
+              onClick={onPhotoShow}
             >
               头像
             </Item>
@@ -162,6 +189,8 @@ const ProfileEdit = () => {
             退出登录
           </Button>
         </div>
+
+        <input type="file" hidden ref={fileRef} onChange={onChangePhoto} />
       </div>
 
       {/* 弹框组件 */}

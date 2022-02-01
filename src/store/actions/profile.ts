@@ -1,6 +1,6 @@
 import { http } from '@/utils/http'
 import type { RootThunkAction } from '@/types/store'
-import type { UserResponse, UserProfileResponse, UserProfile } from '@/types/data'
+import type { UserResponse, UserProfileResponse, UserProfile, UserPhotoResponse } from '@/types/data'
 
 // 获取用户信息
 export const getUser = (): RootThunkAction => {
@@ -32,5 +32,20 @@ export const updateUserProfile = (userProfile: Partial<UserProfile>): RootThunkA
 
     // 分发 action 以更新用户昵称
     dispatch({ type: 'profile/update', payload: userProfile })
+  }
+}
+
+// 更新用户头像
+export const updateUserPhoto = (data: FormData): RootThunkAction => {
+  return async (diapatch) => {
+    const res = await http.patch<UserPhotoResponse>('/user/photo', data)
+
+    console.log(res)
+    diapatch({
+      type: 'profile/update',
+      payload: {
+        photo: res.data.data.photo
+      }
+    })
   }
 }

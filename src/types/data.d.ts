@@ -38,3 +38,6 @@ export type LoginResponse = ApiResponse<Token>
 export type UserResponse = ApiResponse<User>
 // 个人信息 接口的响应类型
 export type UserProfileResponse = ApiResponse<UserProfile>
+export type UserPhotoResponse = ApiResponse<{
+  photo: string
+}>
