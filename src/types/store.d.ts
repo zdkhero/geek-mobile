@@ -17,10 +17,14 @@ type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
 type RootAction = LoginAction | ProfileAction
 
 // 登录相关的 action 类型
-type LoginAction = {
-  type: 'login/token'
-  payload: Token
-}
+type LoginAction =
+  | {
+      type: 'login/token'
+      payload: Token
+    }
+  | {
+      type: 'login/logout'
+    }
 
 // 获取用户信息的 action 类型
 type ProfileAction =

@@ -1,7 +1,7 @@
 import type { LoginResponse } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import { http } from '@/utils/http'
-import { setToken } from '@/utils/token'
+import { clearToken, setToken } from '@/utils/token'
 
 // login 函数的参数类型
 type LoginParams = { mobile: string; code: string }
@@ -26,5 +26,12 @@ export const getCode = (mobile: string) => {
   return async () => {
     // 注意：验证码是发送到手机上，不对存储到代码中，因此不需要操作 redux
     await http.get(`/sms/codes/${mobile}`)
+  }
+}
+
+export const logout = (): RootThunkAction => {
+  return async (dispatch) => {
+    dispatch({ type: 'login/logout' })
+    clearToken()
   }
 }
