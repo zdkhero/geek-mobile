@@ -12,6 +12,7 @@ import Edit from '@/pages/Profile/Edit'
 
 // 导入样式文件
 import './App.scss'
+import AuthRoute from './components/AuthRoute'
 
 function App() {
   return (
@@ -22,8 +23,22 @@ function App() {
           <Route index element={<Home />}></Route>
           <Route path="question" element={<Question />}></Route>
           <Route path="video" element={<Video />}></Route>
-          <Route path="profile" element={<Profile />}>
-            <Route path="edit" element={<Edit />}></Route>
+          <Route
+            path="profile"
+            element={
+              <AuthRoute>
+                <Profile />
+              </AuthRoute>
+            }
+          >
+            <Route
+              path="edit"
+              element={
+                <AuthRoute>
+                  <Edit />
+                </AuthRoute>
+              }
+            ></Route>
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />
