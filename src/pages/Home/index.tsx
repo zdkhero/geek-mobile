@@ -1,14 +1,27 @@
-import { Tabs } from 'antd-mobile'
-import Icon from '@/components/Icon'
-
-import styles from './index.module.scss'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { Tabs, Popup } from 'antd-mobile'
+
+import Icon from '@/components/Icon'
+import Channels from './components/Channels'
+
 import { getUserChannel } from '@/store/actions/home'
 import { RootState } from '@/types/store'
 
+import styles from './index.module.scss'
+
 const Home = () => {
   const dispatch = useDispatch()
+  const [visible, setVisible] = useState(false)
+
+  const onChannelOpen = () => {
+    setVisible(true)
+  }
+
+  const onChannelClose = () => {
+    setVisible(false)
+  }
+
   const { userChannel } = useSelector((state: RootState) => state.home)
 
   useEffect(() => {
@@ -31,8 +44,12 @@ const Home = () => {
 
       <div className="tabs-opration">
         <Icon type="iconbtn_search" />
-        <Icon type="iconbtn_channel" />
+        <Icon type="iconbtn_channel" onClick={onChannelOpen} />
       </div>
+
+      <Popup visible={visible} onMaskClick={onChannelClose} position="left" className="channel-popup">
+        <Channels onClose={onChannelClose} />
+      </Popup>
     </div>
   )
 }
