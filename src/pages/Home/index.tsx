@@ -22,7 +22,11 @@ const Home = () => {
     setVisible(false)
   }
 
-  const { userChannel } = useSelector((state: RootState) => state.home)
+  const onTabChange = (key: string) => {
+    dispatch({ type: 'home/changeTab', payload: key })
+  }
+
+  const { userChannel, channelActiveKey } = useSelector((state: RootState) => state.home)
 
   useEffect(() => {
     dispatch(getUserChannel())
@@ -33,7 +37,7 @@ const Home = () => {
       {/* 频道 Tabs 列表 */}
       {/* 注意：此处别忘了添加 tabs 类名 */}
       {userChannel.length > 0 && (
-        <Tabs className="tabs" activeLineMode="fixed">
+        <Tabs className="tabs" activeLineMode="fixed" activeKey={channelActiveKey} onChange={onTabChange}>
           {userChannel.map((item) => (
             <Tabs.Tab title={item.name} key={item.id}>
               推荐频道的内容
