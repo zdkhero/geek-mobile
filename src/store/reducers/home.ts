@@ -4,11 +4,13 @@ import { HomeAction } from '@/types/store'
 type HomeState = {
   userChannel: Channel[]
   restChannel: Channel[]
+  channelActiveKey: string
 }
 
 const initialState: HomeState = {
   userChannel: [],
-  restChannel: []
+  restChannel: [],
+  channelActiveKey: ''
 }
 
 const home = (state = initialState, action: HomeAction): HomeState => {
@@ -16,12 +18,19 @@ const home = (state = initialState, action: HomeAction): HomeState => {
     case 'home/getUserChannel':
       return {
         ...state,
-        userChannel: action.payload
+        userChannel: action.payload,
+        // 设置默认值
+        channelActiveKey: action.payload[0]?.id + ''
       }
     case 'home/getAllChannel':
       return {
         ...state,
         restChannel: action.payload
+      }
+    case 'home/changeTab':
+      return {
+        ...state,
+        channelActiveKey: action.payload
       }
 
     default:

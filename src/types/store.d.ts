@@ -48,6 +48,10 @@ type HomeAction =
       type: 'home/getAllChannel'
       payload: Channel[]
     }
+  | {
+      type: 'home/changeTab'
+      payload: string
+    }
 
 // 文章相关的 action 类型
 

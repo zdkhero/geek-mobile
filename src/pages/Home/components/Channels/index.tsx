@@ -21,11 +21,16 @@ const Channels = ({ onClose }: Props) => {
     dispatch(getAllChannel())
   }, [dispatch])
 
-  const { userChannel, restChannel } = useSelector((state: RootState) => state.home)
+  const { userChannel, restChannel, channelActiveKey } = useSelector((state: RootState) => state.home)
 
   // 切换编辑与保存状态
   const onChangeEdit = () => {
     setIsEdit(!isEdit)
+  }
+
+  const onChannelClick = (id: string) => {
+    dispatch({ type: 'home/changeTab', payload: id })
+    onClose()
   }
 
   return (
@@ -46,7 +51,11 @@ const Channels = ({ onClose }: Props) => {
           <div className="channel-list">
             {/* 选中时，添加类名 selected */}
             {userChannel.map((item) => (
-              <span key={item.id} className={classnames('channel-list-item')}>
+              <span
+                key={item.id}
+                className={classnames('channel-list-item', channelActiveKey === item.id + '' && 'selected')}
+                onClick={() => onChannelClick(item.id + '')}
+              >
                 {item.name}
                 <Icon type="iconbtn_tag_close" />
               </span>
