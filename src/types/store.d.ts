@@ -52,6 +52,10 @@ type HomeAction =
       type: 'home/changeTab'
       payload: string
     }
+  | {
+      type: 'home/delChannel'
+      payload: Channel
+    }
 
 // 文章相关的 action 类型
 

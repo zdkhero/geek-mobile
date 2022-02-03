@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import classnames from 'classnames'
 import Icon from '@/components/Icon'
 import { RootState } from '@/types/store'
-import { getAllChannel } from '@/store/actions/home'
+import { delChannel, getAllChannel } from '@/store/actions/home'
 
 import styles from './index.module.scss'
+import { Channel } from '@/types/data'
 
 type Props = {
   onClose: () => void
@@ -28,9 +29,18 @@ const Channels = ({ onClose }: Props) => {
     setIsEdit(!isEdit)
   }
 
-  const onChannelClick = (id: string) => {
-    dispatch({ type: 'home/changeTab', payload: id })
-    onClose()
+  // 点击频道
+  const onChannelClick = (channel: Channel) => {
+    if (!isEdit) {
+      dispatch({ type: 'home/changeTab', payload: channel.id })
+      onClose()
+      return
+    }
+
+    console.log(userChannel)
+    if (channel.id === 0) return
+    if (userChannel.length <= 4) return
+    dispatch(delChannel(channel))
   }
 
   return (
@@ -54,7 +64,7 @@ const Channels = ({ onClose }: Props) => {
               <span
                 key={item.id}
                 className={classnames('channel-list-item', channelActiveKey === item.id + '' && 'selected')}
-                onClick={() => onChannelClick(item.id + '')}
+                onClick={() => onChannelClick(item)}
               >
                 {item.name}
                 <Icon type="iconbtn_tag_close" />

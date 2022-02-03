@@ -57,3 +57,25 @@ export const getAllChannel = (): RootThunkAction => {
     dispatch({ type: 'home/getAllChannel', payload: restChannels })
   }
 }
+
+// 删除频道
+export const delChannel = (channel: Channel): RootThunkAction => {
+  return async (dispatch, getState) => {
+    const {
+      login: { token }
+    } = getState()
+
+    if (token) {
+      // 已登录
+      await http.delete(`/user/channels/${channel.id}`)
+    } else {
+      // 未登录
+      const localChannels = JSON.parse(localStorage.getItem(CHANNEL_KEY) ?? '[]') as Channel[]
+
+      const userChannel = localChannels.filter((item) => item.id !== channel.id)
+      localStorage.setItem(CHANNEL_KEY, JSON.stringify(userChannel))
+    }
+
+    dispatch({ type: 'home/delChannel', payload: channel })
+  }
+}

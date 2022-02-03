@@ -1,5 +1,6 @@
 import { Channel } from '@/types/data'
 import { HomeAction } from '@/types/store'
+import { sortBy } from 'lodash'
 
 type HomeState = {
   userChannel: Channel[]
@@ -31,6 +32,14 @@ const home = (state = initialState, action: HomeAction): HomeState => {
       return {
         ...state,
         channelActiveKey: action.payload
+      }
+    case 'home/delChannel':
+      return {
+        ...state,
+        // 删除当前频道
+        userChannel: state.userChannel.filter((item) => item.id !== action.payload.id),
+        // 将被删除频道添加到推荐频道中，并且根据 id 进行排序
+        restChannel: sortBy([...state.restChannel, action.payload], 'id')
       }
 
     default:
