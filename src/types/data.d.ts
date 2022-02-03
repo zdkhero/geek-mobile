@@ -26,6 +26,15 @@ export type UserProfile = {
   intro: string
 }
 
+export type Channel = {
+  id: number
+  name: string
+}
+
+export type UserChannel = {
+  channels: Channel[]
+}
+
 type ApiResponse<Data> = {
   message: string
   data: Data
@@ -41,3 +50,5 @@ export type UserProfileResponse = ApiResponse<UserProfile>
 export type UserPhotoResponse = ApiResponse<{
   photo: string
 }>
+
+export type UserChannelResponse = ApiResponse<UserChannel>
