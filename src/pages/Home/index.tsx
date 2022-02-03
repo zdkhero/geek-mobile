@@ -2,38 +2,32 @@ import { Tabs } from 'antd-mobile'
 import Icon from '@/components/Icon'
 
 import styles from './index.module.scss'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { getUseChannel } from '@/store/actions/home'
+import { getUserChannel } from '@/store/actions/home'
+import { RootState } from '@/types/store'
 
 const Home = () => {
   const dispatch = useDispatch()
+  const { userChannel } = useSelector((state: RootState) => state.home)
 
   useEffect(() => {
-    dispatch(getUseChannel())
+    dispatch(getUserChannel())
   }, [dispatch])
 
   return (
     <div className={styles.root}>
       {/* 频道 Tabs 列表 */}
       {/* 注意：此处别忘了添加 tabs 类名 */}
-      <Tabs className="tabs" activeLineMode="fixed">
-        <Tabs.Tab title="推荐" key="1">
-          推荐频道的内容
-        </Tabs.Tab>
-        <Tabs.Tab title="html" key="2">
-          html频道的内容
-        </Tabs.Tab>
-        <Tabs.Tab title="开发者资讯" key="3">
-          开发者资讯频道的内容
-        </Tabs.Tab>
-        <Tabs.Tab title="c++" key="4">
-          c++频道的内容
-        </Tabs.Tab>
-        <Tabs.Tab title="css" key="5">
-          css频道的内容
-        </Tabs.Tab>
-      </Tabs>
+      {userChannel.length > 0 && (
+        <Tabs className="tabs" activeLineMode="fixed">
+          {userChannel.map((item) => (
+            <Tabs.Tab title={item.name} key={item.id}>
+              推荐频道的内容
+            </Tabs.Tab>
+          ))}
+        </Tabs>
+      )}
 
       <div className="tabs-opration">
         <Icon type="iconbtn_search" />

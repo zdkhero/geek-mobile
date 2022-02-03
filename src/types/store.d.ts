@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk'
 import store from '@/store'
 
-import { Token, User } from './data'
+import type { Token, User, Channel } from './data'
 
 // Redux 应用的状态
 type RootState = ReturnType<typeof store.getState>
@@ -12,9 +12,6 @@ type RootState = ReturnType<typeof store.getState>
 // ExtraThunkArg: 额外的参数，没有用到，可以指定为 unknown
 // BasicAction: 非 thunk action，即对象形式的 action
 type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
-
-// 项目中所有 action 类型
-type RootAction = LoginAction | ProfileAction
 
 // 登录相关的 action 类型
 type LoginAction =
@@ -41,4 +38,13 @@ type ProfileAction =
       payload: Partial<UserProfile>
     }
 
+// 首页相关的 action 类型
+type HomeAction = {
+  type: 'home/getUserChannel'
+  payload: Channel[]
+}
+
 // 文章相关的 action 类型
+
+// 项目中所有 action 类型
+type RootAction = LoginAction | ProfileAction | HomeAction
