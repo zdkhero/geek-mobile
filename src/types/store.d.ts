@@ -39,10 +39,15 @@ type ProfileAction =
     }
 
 // 首页相关的 action 类型
-type HomeAction = {
-  type: 'home/getUserChannel'
-  payload: Channel[]
-}
+type HomeAction =
+  | {
+      type: 'home/getUserChannel'
+      payload: Channel[]
+    }
+  | {
+      type: 'home/getAllChannel'
+      payload: Channel[]
+    }
 
 // 文章相关的 action 类型
 

@@ -13,6 +13,7 @@
     "antd-mobile": "^5.0.0-rc.23",
     "axios": "^0.25.0",
     "dayjs": "^1.10.7",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@craco/craco": "7.0.0-alpha.0",
+    "@types/lodash": "^4.14.178",
     "postcss-px-to-viewport": "^1.1.1"
   }
 }

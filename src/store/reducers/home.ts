@@ -3,10 +3,12 @@ import { HomeAction } from '@/types/store'
 
 type HomeState = {
   userChannel: Channel[]
+  restChannel: Channel[]
 }
 
 const initialState: HomeState = {
-  userChannel: []
+  userChannel: [],
+  restChannel: []
 }
 
 const home = (state = initialState, action: HomeAction): HomeState => {
@@ -15,6 +17,11 @@ const home = (state = initialState, action: HomeAction): HomeState => {
       return {
         ...state,
         userChannel: action.payload
+      }
+    case 'home/getAllChannel':
+      return {
+        ...state,
+        restChannel: action.payload
       }
 
     default:

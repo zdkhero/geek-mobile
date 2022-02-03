@@ -2,15 +2,24 @@ import classnames from 'classnames'
 
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/types/store'
+import { getAllChannel } from '@/store/actions/home'
+import { useEffect } from 'react'
 
 type Props = {
   onClose: () => void
 }
 
 const Channels = ({ onClose }: Props) => {
-  const { userChannel } = useSelector((state: RootState) => state.home)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getAllChannel())
+  }, [dispatch])
+
+  const { userChannel, restChannel } = useSelector((state: RootState) => state.home)
+
   return (
     <div className={styles.root}>
       <div className="channel-header">
@@ -41,7 +50,11 @@ const Channels = ({ onClose }: Props) => {
             <span className="channel-item-title-extra">点击添加频道</span>
           </div>
           <div className="channel-list">
-            <span className="channel-list-item">+ HTML</span>
+            {restChannel.map((item) => (
+              <span key={item.id} className="channel-list-item">
+                + {item.name}
+              </span>
+            ))}
           </div>
         </div>
       </div>

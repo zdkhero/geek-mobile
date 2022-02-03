@@ -35,6 +35,10 @@ export type UserChannel = {
   channels: Channel[]
 }
 
+export type AllChannels = {
+  channels: Channel[]
+}
+
 type ApiResponse<Data> = {
   message: string
   data: Data
@@ -52,3 +56,4 @@ export type UserPhotoResponse = ApiResponse<{
 }>
 
 export type UserChannelResponse = ApiResponse<UserChannel>
+export type AllChannelsResponse = ApiResponse<AllChannels>

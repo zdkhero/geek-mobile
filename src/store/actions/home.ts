@@ -1,9 +1,11 @@
-import { Channel, UserChannelResponse } from '@/types/data'
+import { AllChannelsResponse, Channel, UserChannelResponse } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import { http } from '@/utils/http'
+import differenceBy from 'lodash/differenceBy'
 
 const CHANNEL_KEY = 'geek-channels'
 
+// 获取用户的频道数据
 export const getUserChannel = (): RootThunkAction => {
   return async (dispatch, getState) => {
     // 获取本地存储的 token
@@ -38,5 +40,20 @@ export const getUserChannel = (): RootThunkAction => {
     }
 
     dispatch({ type: 'home/getUserChannel', payload: userChannel })
+  }
+}
+
+// 获取所有的频道数据
+export const getAllChannel = (): RootThunkAction => {
+  return async (dispatch, getState) => {
+    const res = await http.get<AllChannelsResponse>('channels')
+    console.log(res)
+    const {
+      home: { userChannel }
+    } = getState()
+
+    const restChannels = differenceBy(res.data.data.channels, userChannel, 'id')
+
+    dispatch({ type: 'home/getAllChannel', payload: restChannels })
   }
 }
