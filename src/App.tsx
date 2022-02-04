@@ -9,6 +9,7 @@ import Question from '@/pages/Question'
 import Video from '@/pages/Video'
 import Profile from '@/pages/Profile'
 import Edit from '@/pages/Profile/Edit'
+import Article from './pages/Article'
 
 // 导入样式文件
 import './App.scss'
@@ -40,7 +41,9 @@ function App() {
               }
             ></Route>
           </Route>
+          <Route path="article/:id" element={<Article />}></Route>
         </Route>
+
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>

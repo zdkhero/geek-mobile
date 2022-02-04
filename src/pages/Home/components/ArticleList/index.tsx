@@ -1,3 +1,4 @@
+import { useNavigate, generatePath } from 'react-router-dom'
 import { InfiniteScroll, PullToRefresh } from 'antd-mobile'
 
 import ArticleItem from '@/components/ArticleItem'
@@ -14,6 +15,7 @@ type Props = {
 const ArticleList = ({ channelId }: Props) => {
   // const [hasMore, setHasMore] = useState(true)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   // 获取当前频道的文章列表数据
   const { channelArticles } = useSelector((state: RootState) => state.home)
   // 注意：此处的 频道对应的 文章列表数据，可能是不存在的，所以，此处设置默认值
@@ -60,7 +62,7 @@ const ArticleList = ({ channelId }: Props) => {
       }
 
       return (
-        <div key={index} className="article-item">
+        <div key={index} className="article-item" onClick={() => navigate(`/article/${art_id}`)}>
           <ArticleItem {...articleData} />
         </div>
       )
