@@ -14,12 +14,10 @@ type Props = {
 }
 
 const ArticleList = ({ channelId }: Props) => {
-  const [data, setData] = useState<string[]>([])
   const [hasMore, setHasMore] = useState(true)
   const dispatch = useDispatch()
   // 获取当前频道的文章列表数据
   const { channelArticles } = useSelector((state: RootState) => state.home)
-  console.log(channelArticles)
   // 注意：此处的 频道对应的 文章列表数据，可能是不存在的，所以，此处设置默认值
   const currentChannelArticle = channelArticles[channelId] ?? {
     pre_timestamp: Date.now(),
