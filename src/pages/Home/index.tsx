@@ -4,6 +4,7 @@ import { Tabs, Popup } from 'antd-mobile'
 
 import Icon from '@/components/Icon'
 import Channels from './components/Channels'
+import ArticleList from './components/ArticleList'
 
 import { getUserChannel } from '@/store/actions/home'
 import { RootState } from '@/types/store'
@@ -40,7 +41,8 @@ const Home = () => {
         <Tabs className="tabs" activeLineMode="fixed" activeKey={channelActiveKey} onChange={onTabChange}>
           {userChannel.map((item) => (
             <Tabs.Tab title={item.name} key={item.id}>
-              推荐频道的内容
+              {/* 在每个 Tabs.TabPane 中渲染文章列表组件 */}
+              <ArticleList />
             </Tabs.Tab>
           ))}
         </Tabs>
