@@ -1,4 +1,4 @@
-import { Channel } from '@/types/data'
+import { ArticleList, Channel } from '@/types/data'
 import { HomeAction } from '@/types/store'
 import { sortBy } from 'lodash'
 
@@ -6,12 +6,16 @@ type HomeState = {
   userChannel: Channel[]
   restChannel: Channel[]
   channelActiveKey: string
+  channelArticles: {
+    [key: number]: ArticleList
+  }
 }
 
 const initialState: HomeState = {
   userChannel: [],
   restChannel: [],
-  channelActiveKey: ''
+  channelActiveKey: '',
+  channelArticles: {}
 }
 
 const home = (state = initialState, action: HomeAction): HomeState => {
@@ -46,6 +50,30 @@ const home = (state = initialState, action: HomeAction): HomeState => {
         ...state,
         userChannel: [...state.userChannel, action.payload],
         restChannel: state.restChannel.filter((item) => item.id !== action.payload.id)
+      }
+    case 'home/getChannelArticles':
+      // 注意：当前频道的文章列表数据可能为空（比如，第一次加载），为了方便后续操作
+      //      此处为其指定默认值
+      const curChannelArticles = state.channelArticles[action.payload.channelId] ?? {
+        pre_timestamp: null,
+        results: []
+      }
+      const {
+        channelId,
+        data: { pre_timestamp, results }
+      } = action.payload
+
+      return {
+        ...state,
+        channelArticles: {
+          ...state.channelArticles,
+          // 修改当前频道对应的文章列表数据
+          [channelId]: {
+            pre_timestamp,
+            // 追加文章列表数据
+            results: [...curChannelArticles.results, ...results]
+          }
+        }
       }
 
     default:

@@ -5,8 +5,9 @@ import { sleep } from 'antd-mobile/es/utils/sleep'
 import ArticleItem from '@/components/ArticleItem'
 
 import styles from './index.module.scss'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getArticleList } from '@/store/actions/home'
+import { RootState } from '@/types/store'
 
 type Props = {
   channelId: number
@@ -16,6 +17,15 @@ const ArticleList = ({ channelId }: Props) => {
   const [data, setData] = useState<string[]>([])
   const [hasMore, setHasMore] = useState(true)
   const dispatch = useDispatch()
+  // 获取当前频道的文章列表数据
+  const { channelArticles } = useSelector((state: RootState) => state.home)
+  console.log(channelArticles)
+  // 注意：此处的 频道对应的 文章列表数据，可能是不存在的，所以，此处设置默认值
+  const currentChannelArticle = channelArticles[channelId] ?? {
+    pre_timestamp: Date.now(),
+    results: []
+  }
+  const { pre_timestamp, results } = currentChannelArticle
 
   async function loadMore() {
     const timestamp = +new Date() + ''
@@ -27,7 +37,7 @@ const ArticleList = ({ channelId }: Props) => {
       {/* 文章列表中的每一项 */}
       <div className="article-item">
         {/* 文章列表中的每一项 */}
-        {data.map((item, index) => (
+        {results.map((item, index) => (
           <div key={index} className="article-item">
             <ArticleItem type={1} />
           </div>

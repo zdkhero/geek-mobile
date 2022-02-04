@@ -60,6 +60,15 @@ type HomeAction =
       type: 'home/addChannel'
       payload: Channel
     }
+  | {
+      type: 'home/getChannelArticles'
+      payload: {
+        // 频道 id
+        channelId: number
+        // 该频道的文章列表数据
+        data: Articles
+      }
+    }
 
 // 文章相关的 action 类型
 

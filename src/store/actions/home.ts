@@ -109,6 +109,13 @@ export const getArticleList = (channel_id: number, timestamp: string): RootThunk
       }
     })
 
-    console.log(res)
+    // 分发 action
+    dispatch({
+      type: 'home/getChannelArticles',
+      payload: {
+        channelId: channel_id,
+        data: res.data.data
+      }
+    })
   }
 }
