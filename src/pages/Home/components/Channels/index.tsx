@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import classnames from 'classnames'
 import Icon from '@/components/Icon'
 import { RootState } from '@/types/store'
-import { delChannel, getAllChannel } from '@/store/actions/home'
+import { addChannel, delChannel, getAllChannel } from '@/store/actions/home'
 
 import styles from './index.module.scss'
 import { Channel } from '@/types/data'
@@ -41,6 +41,11 @@ const Channels = ({ onClose }: Props) => {
     if (channel.id === 0) return
     if (userChannel.length <= 4) return
     dispatch(delChannel(channel))
+  }
+
+  // 添加频道
+  const onAddChannel = (channel: Channel) => {
+    dispatch(addChannel(channel))
   }
 
   return (
@@ -80,7 +85,7 @@ const Channels = ({ onClose }: Props) => {
           </div>
           <div className="channel-list">
             {restChannel.map((item) => (
-              <span key={item.id} className="channel-list-item">
+              <span key={item.id} className="channel-list-item" onClick={() => onAddChannel(item)}>
                 + {item.name}
               </span>
             ))}

@@ -56,6 +56,10 @@ type HomeAction =
       type: 'home/delChannel'
       payload: Channel
     }
+  | {
+      type: 'home/addChannel'
+      payload: Channel
+    }
 
 // 文章相关的 action 类型
 

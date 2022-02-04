@@ -41,6 +41,12 @@ const home = (state = initialState, action: HomeAction): HomeState => {
         // 将被删除频道添加到推荐频道中，并且根据 id 进行排序
         restChannel: sortBy([...state.restChannel, action.payload], 'id')
       }
+    case 'home/addChannel':
+      return {
+        ...state,
+        userChannel: [...state.userChannel, action.payload],
+        restChannel: state.restChannel.filter((item) => item.id !== action.payload.id)
+      }
 
     default:
       return state
