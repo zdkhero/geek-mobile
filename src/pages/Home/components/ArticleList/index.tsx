@@ -1,4 +1,4 @@
-import { useNavigate, generatePath } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { InfiniteScroll, PullToRefresh } from 'antd-mobile'
 
 import ArticleItem from '@/components/ArticleItem'
