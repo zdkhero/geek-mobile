@@ -1,6 +1,4 @@
-import React, { useState } from 'react'
-import { InfiniteScroll } from 'antd-mobile'
-import { sleep } from 'antd-mobile/es/utils/sleep'
+import { InfiniteScroll, PullToRefresh } from 'antd-mobile'
 
 import ArticleItem from '@/components/ArticleItem'
 
@@ -35,23 +33,56 @@ const ArticleList = ({ channelId }: Props) => {
   // 此时：hasMore 的值为 false，那么 InfiniteScroll 组件就不会获取数据了
   const hasMore = pre_timestamp !== null
 
+  // 下拉刷新文章列表
+  const onRefresh = async () => {
+    await dispatch(getArticleList(channelId, Date.now() + ''))
+  }
+
+  const renderArticleList = () => {
+    return results.map((item, index) => {
+      const {
+        title,
+        pubdate,
+        comm_count,
+        aut_name,
+        art_id,
+        cover: { type, images }
+      } = item
+
+      const articleData = {
+        title,
+        pubdate,
+        comm_count,
+        aut_name,
+        type,
+        images,
+        art_id
+      }
+
+      return (
+        <div key={index} className="article-item">
+          <ArticleItem {...articleData} />
+        </div>
+      )
+    })
+  }
+
   return (
     <div className={styles.root}>
-      {/* 文章列表中的每一项 */}
-      <div className="article-item">
+      <PullToRefresh onRefresh={onRefresh}>
         {/* 文章列表中的每一项 */}
-        {results.map((item, index) => (
-          <div key={index} className="article-item">
-            <ArticleItem type={1} />
-          </div>
-        ))}
-      </div>
+        <div className="article-item">
+          {/* 文章列表中的每一项 */}
+          {renderArticleList()}
+        </div>
 
-      {/*
+        {/*
         loadMore 加载数据的函数
         hasMore 布尔值，true 表示还有更多数据；false 表示没有更多数据了
       */}
-      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      </PullToRefresh>
     </div>
   )
 }
