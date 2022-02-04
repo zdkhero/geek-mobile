@@ -14,7 +14,7 @@ type Props = {
 }
 
 const ArticleList = ({ channelId }: Props) => {
-  const [hasMore, setHasMore] = useState(true)
+  // const [hasMore, setHasMore] = useState(true)
   const dispatch = useDispatch()
   // 获取当前频道的文章列表数据
   const { channelArticles } = useSelector((state: RootState) => state.home)
@@ -26,9 +26,14 @@ const ArticleList = ({ channelId }: Props) => {
   const { pre_timestamp, results } = currentChannelArticle
 
   async function loadMore() {
-    const timestamp = +new Date() + ''
-    await dispatch(getArticleList(channelId, timestamp))
+    // const timestamp = +new Date() + ''
+    await dispatch(getArticleList(channelId, pre_timestamp))
   }
+
+  // 是否加载更多数据
+  // 如果 pre_timestamp 值为 null，说明没有更多数据了
+  // 此时：hasMore 的值为 false，那么 InfiniteScroll 组件就不会获取数据了
+  const hasMore = pre_timestamp !== null
 
   return (
     <div className={styles.root}>
