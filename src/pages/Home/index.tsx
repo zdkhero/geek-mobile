@@ -42,7 +42,7 @@ const Home = () => {
           {userChannel.map((item) => (
             <Tabs.Tab title={item.name} key={item.id}>
               {/* 在每个 Tabs.TabPane 中渲染文章列表组件 */}
-              <ArticleList />
+              <ArticleList channelId={item.id} />
             </Tabs.Tab>
           ))}
         </Tabs>

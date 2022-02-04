@@ -1,4 +1,4 @@
-import { AllChannelsResponse, Channel, UserChannelResponse } from '@/types/data'
+import { AllChannelsResponse, ArticlesResponse, Channel, UserChannelResponse } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import { http } from '@/utils/http'
 import differenceBy from 'lodash/differenceBy'
@@ -97,5 +97,18 @@ export const addChannel = (channel: Channel): RootThunkAction => {
     }
 
     dispatch({ type: 'home/addChannel', payload: channel })
+  }
+}
+
+export const getArticleList = (channel_id: number, timestamp: string): RootThunkAction => {
+  return async (dispatch) => {
+    const res = await http.get<ArticlesResponse>('/articles', {
+      params: {
+        channel_id,
+        timestamp
+      }
+    })
+
+    console.log(res)
   }
 }

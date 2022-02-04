@@ -44,6 +44,24 @@ type ApiResponse<Data> = {
   data: Data
 }
 
+export type Article = {
+  art_id: string
+  aut_id: string
+  aut_name: string
+  comm_count: number
+  pubdate: string
+  title: string
+  cover: {
+    type: number
+    images: string[]
+  }
+}
+
+export type ArticleList = {
+  pre_timestamp: string
+  results: Article[]
+}
+
 // 统一处理axios响应类型：
 // login 接口的响应类型
 export type LoginResponse = ApiResponse<Token>
@@ -57,3 +75,5 @@ export type UserPhotoResponse = ApiResponse<{
 
 export type UserChannelResponse = ApiResponse<UserChannel>
 export type AllChannelsResponse = ApiResponse<AllChannels>
+
+export type ArticlesResponse = ApiResponse<ArticleList>
