@@ -11,11 +11,14 @@ import { clearSuggestion, getSuggestion } from '@/store/actions/search'
 // import debounce from 'lodash/debounce'
 import { useDebounceFn } from 'ahooks'
 import { RootState } from '@/types/store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+let GEEK_SEARCH_KEY = 'geet-search-history'
 
 const SearchPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchHistory, setSearchHistory] = useState<string[]>([])
   let { suggestion } = useSelector((state: RootState) => state.search)
   suggestion = suggestion[0] === null ? [] : suggestion
   const [searchTxt, setSearchTxt] = useState('')
@@ -60,13 +63,58 @@ const SearchPage = () => {
     }
   })
 
+  const onSearch = (value: string) => {
+    dispatch(clearSuggestion())
+    navigate(`/search/result?q=${value}`)
+    saveHistories(value)
+  }
+
+  const saveHistories = (value: string) => {
+    const localHistories = JSON.parse(localStorage.getItem(GEEK_SEARCH_KEY) ?? '[]') as string[]
+    let histories = []
+
+    if (localHistories.length === 0) {
+      // 没有
+      histories = [value]
+    } else {
+      // 有
+      const exist = localHistories.indexOf(value) >= 0
+      if (exist) {
+        // 存在
+        const leftHistories = localHistories.filter((item) => item !== value)
+        histories = [value, ...leftHistories]
+      } else {
+        // 不存在
+        histories = [value, ...localHistories]
+      }
+    }
+
+    localStorage.setItem(GEEK_SEARCH_KEY, JSON.stringify(histories))
+  }
+
+  useEffect(() => {
+    const histories = JSON.parse(localStorage.getItem(GEEK_SEARCH_KEY) ?? '[]') as string[]
+
+    setSearchHistory(histories)
+  }, [])
+
+  const onDeleteHistory = (value: string) => {
+    const newSearchHistory = searchHistory.filter((item) => item !== value)
+    setSearchHistory(newSearchHistory)
+    localStorage.setItem(GEEK_SEARCH_KEY, JSON.stringify(newSearchHistory))
+  }
+  const onClearHistory = () => {
+    setSearchHistory([])
+    localStorage.removeItem(GEEK_SEARCH_KEY)
+  }
+
   return (
     <div className={styles.root}>
       <NavBar
         className="navbar"
         onBack={() => navigate(-1)}
         right={
-          <span className="search-text" onClick={() => navigate('/search/result')}>
+          <span className="search-text" onClick={() => onSearch(searchTxt)}>
             搜索
           </span>
         }
@@ -78,22 +126,24 @@ const SearchPage = () => {
         <div
           className="history"
           style={{
-            display: true ? 'none' : 'block'
+            display: suggestion.length > 0 ? 'none' : 'block'
           }}
         >
           <div className="history-header">
             <span>搜索历史</span>
-            <span>
+            <span onClick={onClearHistory}>
               <Icon type="iconbtn_del" />
               清除全部
             </span>
           </div>
 
           <div className="history-list">
-            <span className="history-item">
-              <span className="text-overflow">黑马程序员</span>
-              <Icon type="iconbtn_essay_close" />
-            </span>
+            {searchHistory.map((item, index) => (
+              <div key={index} className="history-item">
+                <span className="text-overflow">{item}</span>
+                <Icon type="iconbtn_essay_close" onClick={() => onDeleteHistory(item)} />
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -102,7 +152,7 @@ const SearchPage = () => {
         {highlightSuggestion.map((item, index) => (
           <div key={index} className="result-item">
             <Icon className="icon-search" type="iconbtn_search" />
-            <div className="result-value">
+            <div className="result-value" onClick={() => onSearch(item.left + item.search + item.right)}>
               {item.left}
               {/* 放在 span 中的内容会高亮 */}
               <span>{item.search}</span>
