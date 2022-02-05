@@ -70,10 +70,12 @@ type HomeAction =
       }
     }
 
-export type SearchAction = {
-  type: 'search/suggestion'
-  payload: Suggestion['options']
-}
+export type SearchAction =
+  | {
+      type: 'search/suggestion'
+      payload: Suggestion['options']
+    }
+  | { type: 'search/clearSuggestion' }
 
 // 文章相关的 action 类型
 

@@ -18,3 +18,6 @@ export const getSuggestion = (value: string): RootThunkAction => {
     })
   }
 }
+
+// 清空联想关键词
+export const clearSuggestion = () => ({ type: 'search/clearSuggestion' })

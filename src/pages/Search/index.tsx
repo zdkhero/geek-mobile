@@ -6,18 +6,19 @@ import Icon from '@/components/Icon'
 import styles from './index.module.scss'
 // import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSuggestion } from '@/store/actions/search'
+import { clearSuggestion, getSuggestion } from '@/store/actions/search'
 
 // import debounce from 'lodash/debounce'
 import { useDebounceFn } from 'ahooks'
 import { RootState } from '@/types/store'
+import { useState } from 'react'
 
 const SearchPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   let { suggestion } = useSelector((state: RootState) => state.search)
   suggestion = suggestion[0] === null ? [] : suggestion
-  // const [searchTxt, setSearchTxt] = useState('')
+  const [searchTxt, setSearchTxt] = useState('')
 
   // const debounceFn = debounce((value) => {
   //   dispatch(getSuggestion(value))
@@ -35,11 +36,29 @@ const SearchPage = () => {
   // 监听搜索框内容的改变
   const onSearchChange = (value: string) => {
     // console.log(value)
-    // setSearchTxt(value)
+    setSearchTxt(value)
     // dispatch(getSuggestion(value))
-    if (value.trim() === '') return
+    if (value.trim() === '') return dispatch(clearSuggestion())
     debounceGetSuggest(value)
   }
+
+  const highlightSuggestion = suggestion.map((item) => {
+    const lowerCaseItem = item.toLocaleLowerCase()
+    const lowerCaseSearchTxt = searchTxt.toLocaleLowerCase()
+    const index = lowerCaseItem.indexOf(lowerCaseSearchTxt)
+
+    const searchTxtLength = searchTxt.length
+
+    const left = item.slice(0, index)
+    const right = item.slice(index + searchTxtLength)
+    const search = item.slice(index, index + searchTxtLength)
+
+    return {
+      left,
+      right,
+      search
+    }
+  })
 
   return (
     <div className={styles.root}>
@@ -80,10 +99,15 @@ const SearchPage = () => {
       )}
 
       <div className={classnames('search-result', suggestion.length > 0 ? 'show' : '')}>
-        {suggestion.map((item, index) => (
+        {highlightSuggestion.map((item, index) => (
           <div key={index} className="result-item">
             <Icon className="icon-search" type="iconbtn_search" />
-            <div className="result-value">{item}</div>
+            <div className="result-value">
+              {item.left}
+              {/* 放在 span 中的内容会高亮 */}
+              <span>{item.search}</span>
+              {item.right}
+            </div>
           </div>
         ))}
       </div>
