@@ -5,11 +5,11 @@ type SearchState = {
   suggestion: Suggestion['options']
 }
 
-const initialState = {
+const initialState: SearchState = {
   suggestion: []
 }
 
-const Search = (state = initialState, action: SearchAction): SearchState => {
+const search = (state = initialState, action: SearchAction): SearchState => {
   switch (action.type) {
     case 'search/suggestion':
       return {
@@ -22,4 +22,4 @@ const Search = (state = initialState, action: SearchAction): SearchState => {
   }
 }
 
-export default Search
+export default search

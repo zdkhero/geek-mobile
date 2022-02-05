@@ -4,19 +4,41 @@ import { NavBar, SearchBar } from 'antd-mobile'
 
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+// import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { getSuggestion } from '@/store/actions/search'
+
+// import debounce from 'lodash/debounce'
+import { useDebounceFn } from 'ahooks'
+import { RootState } from '@/types/store'
 
 const SearchPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [searchTxt, setSearchTxt] = useState('')
+  let { suggestion } = useSelector((state: RootState) => state.search)
+  suggestion = suggestion[0] === null ? [] : suggestion
+  // const [searchTxt, setSearchTxt] = useState('')
+
+  // const debounceFn = debounce((value) => {
+  //   dispatch(getSuggestion(value))
+  // }, 500)
+
+  const { run: debounceGetSuggest } = useDebounceFn(
+    (value: string) => {
+      dispatch(getSuggestion(value))
+    },
+    {
+      wait: 500
+    }
+  )
 
   // 监听搜索框内容的改变
   const onSearchChange = (value: string) => {
-    setSearchTxt(value)
-    dispatch(getSuggestion(value))
+    // console.log(value)
+    // setSearchTxt(value)
+    // dispatch(getSuggestion(value))
+    if (value.trim() === '') return
+    debounceGetSuggest(value)
   }
 
   return (
@@ -30,7 +52,7 @@ const SearchPage = () => {
           </span>
         }
       >
-        <SearchBar placeholder="请输入关键字搜索" value={searchTxt} onChange={onSearchChange} />
+        <SearchBar placeholder="请输入关键字搜索" onChange={onSearchChange} />
       </NavBar>
 
       {true && (
@@ -57,14 +79,13 @@ const SearchPage = () => {
         </div>
       )}
 
-      <div className={classnames('search-result', true ? 'show' : '')}>
-        <div className="result-item">
-          <Icon className="icon-search" type="iconbtn_search" />
-          <div className="result-value text-overflow">
-            <span>黑马</span>
-            程序员
+      <div className={classnames('search-result', suggestion.length > 0 ? 'show' : '')}>
+        {suggestion.map((item, index) => (
+          <div key={index} className="result-item">
+            <Icon className="icon-search" type="iconbtn_search" />
+            <div className="result-value">{item}</div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   )

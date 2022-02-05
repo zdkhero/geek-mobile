@@ -10,7 +10,7 @@ export const getSuggestion = (value: string): RootThunkAction => {
       }
     })
 
-    console.log(res)
+    // console.log(res.data.data.options)
 
     dispatch({
       type: 'search/suggestion',
