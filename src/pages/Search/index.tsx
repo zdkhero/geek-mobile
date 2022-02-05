@@ -4,14 +4,19 @@ import { NavBar, SearchBar } from 'antd-mobile'
 
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
-import { Outlet } from 'react-router-dom'
+import { useState } from 'react'
 
 const SearchPage = () => {
   const navigate = useNavigate()
+  const [searchTxt, setSearchTxt] = useState('')
+
+  // 监听搜索框内容的改变
+  const onSearchChange = (value: string) => {
+    setSearchTxt(value)
+  }
 
   return (
     <div className={styles.root}>
-      <Outlet></Outlet>
       <NavBar
         className="navbar"
         onBack={() => navigate(-1)}
@@ -21,7 +26,7 @@ const SearchPage = () => {
           </span>
         }
       >
-        <SearchBar placeholder="请输入关键字搜索" />
+        <SearchBar placeholder="请输入关键字搜索" value={searchTxt} onChange={onSearchChange} />
       </NavBar>
 
       {true && (
