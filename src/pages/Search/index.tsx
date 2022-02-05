@@ -5,14 +5,18 @@ import { NavBar, SearchBar } from 'antd-mobile'
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { getSuggestion } from '@/store/actions/search'
 
 const SearchPage = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [searchTxt, setSearchTxt] = useState('')
 
   // 监听搜索框内容的改变
   const onSearchChange = (value: string) => {
     setSearchTxt(value)
+    dispatch(getSuggestion(value))
   }
 
   return (

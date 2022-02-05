@@ -62,6 +62,11 @@ export type ArticleList = {
   results: Article[]
 }
 
+// 搜索关键词
+export type Suggestion = {
+  options: string[]
+}
+
 // 统一处理axios响应类型：
 // login 接口的响应类型
 export type LoginResponse = ApiResponse<Token>
@@ -77,3 +82,6 @@ export type UserChannelResponse = ApiResponse<UserChannel>
 export type AllChannelsResponse = ApiResponse<AllChannels>
 
 export type ArticlesResponse = ApiResponse<ArticleList>
+
+// 搜索建议列表
+export type SuggestionResponse = ApiResponse<Suggestion>

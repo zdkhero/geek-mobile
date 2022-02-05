@@ -70,7 +70,12 @@ type HomeAction =
       }
     }
 
+export type SearchAction = {
+  type: 'search/suggestion'
+  payload: Suggestion['options']
+}
+
 // 文章相关的 action 类型
 
 // 项目中所有 action 类型
-type RootAction = LoginAction | ProfileAction | HomeAction
+type RootAction = LoginAction | ProfileAction | HomeAction | SearchAction
