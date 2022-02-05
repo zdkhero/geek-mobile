@@ -1,15 +1,31 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { NavBar } from 'antd-mobile'
 
 import ArticleItem from '@/components/ArticleItem'
 
 import styles from './index.module.scss'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSearchResult } from '@/store/actions/search'
+import { RootState } from '@/types/store'
 
 const Result = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
+  const params = new URLSearchParams(location.search)
+  const q = params.get('q') ?? ''
+
+  useEffect(() => {
+    dispatch(getSearchResult(q))
+  }, [dispatch, q])
+
+  const {
+    searchResults: { results }
+  } = useSelector((state: RootState) => state.search)
 
   const renderArticleList = () => {
-    return [].map((item, index) => {
+    return results.map((item, index) => {
       const {
         title,
         pubdate,

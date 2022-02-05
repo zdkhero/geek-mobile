@@ -1,12 +1,19 @@
-import { Suggestion } from '@/types/data'
+import { SearchResult, Suggestion } from '@/types/data'
 import { SearchAction } from '@/types/store'
 
 type SearchState = {
   suggestion: Suggestion['options']
+  searchResults: SearchResult
 }
 
 const initialState: SearchState = {
-  suggestion: []
+  suggestion: [],
+  searchResults: {
+    page: 1,
+    per_page: 10,
+    total_count: 0,
+    results: []
+  }
 }
 
 const search = (state = initialState, action: SearchAction): SearchState => {
@@ -20,6 +27,11 @@ const search = (state = initialState, action: SearchAction): SearchState => {
       return {
         ...state,
         suggestion: []
+      }
+    case 'search/getSearchResult':
+      return {
+        ...state,
+        searchResults: action.payload
       }
     default:
       return state

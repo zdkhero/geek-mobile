@@ -76,6 +76,7 @@ export type SearchAction =
       payload: Suggestion['options']
     }
   | { type: 'search/clearSuggestion' }
+  | { type: 'search/getSearchResult'; payload: SearchResult }
 
 // 文章相关的 action 类型
 
