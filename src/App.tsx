@@ -10,6 +10,8 @@ import Video from '@/pages/Video'
 import Profile from '@/pages/Profile'
 import Edit from '@/pages/Profile/Edit'
 import Article from './pages/Article'
+import Search from './pages/Search'
+import SearchResult from './pages/Search/Result'
 
 // 导入样式文件
 import './App.scss'
@@ -42,6 +44,8 @@ function App() {
             ></Route>
           </Route>
           <Route path="article/:id" element={<Article />}></Route>
+          <Route path="search" element={<Search />}></Route>
+          <Route path="search/result" element={<SearchResult />}></Route>
         </Route>
 
         <Route path="/login" element={<Login />} />
