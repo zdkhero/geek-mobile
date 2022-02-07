@@ -30,6 +30,8 @@ const Article = () => {
   const authorRef = useRef<HTMLDivElement>(null)
   // 控制导航栏中作者信息的展示和隐藏
   const [isShowNavAuthor, setIsShowNavAuthor] = useState(false)
+  // 创建评论信息的DOM对象的 ref
+  const commentRef = useRef<HTMLDivElement>(null)
 
   /**
    * 导航栏高度的常量
@@ -100,6 +102,21 @@ const Article = () => {
       wrapper.removeEventListener('scroll', onScroll)
     }
   }, [loading])
+
+  // 点击跳转到评论内容
+  const onShowComment = () => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+    const comment = commentRef.current
+    if (!comment) return
+
+    const commentTop = comment.getBoundingClientRect().top
+    wrapper.scrollTo({
+      top: commentTop - NAV_BAR_HEIGTH,
+      // 如果想要滚动时，带有动画效果，可以使用 smooth 即可
+      behavior: 'auto'
+    })
+  }
 
   const loadMoreComments = async () => {
     console.log('加载更多评论')
@@ -182,7 +199,7 @@ const Article = () => {
           </div>
         </div>
 
-        <div className="comment">
+        <div className="comment" ref={commentRef}>
           <div className="comment-header">
             <span>全部评论（10）</span>
             <span>{like_count} 点赞</span>
@@ -221,7 +238,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter />
+        <CommentFooter onShowComment={onShowComment} />
       </div>
     </div>
   )
