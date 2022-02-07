@@ -1,3 +1,4 @@
+import { Image } from 'antd-mobile'
 import dayjs from 'dayjs'
 // 相对时间插件
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -39,7 +40,16 @@ const ArticleItem = ({ type, title, pubdate, comm_count, aut_name, images }: Pro
             {/* 渲染文章的封面图片 */}
             {images.map((item, index) => (
               <div key={index} className="article-img-wrapper">
-                <img src={item} alt="" />
+                <Image // 开启懒加载
+                  lazy
+                  // 设置图片宽高
+                  style={{
+                    '--width': '110px',
+                    '--height': '75px'
+                  }}
+                  src={item}
+                  alt=""
+                />
               </div>
             ))}
           </div>
