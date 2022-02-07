@@ -4,6 +4,8 @@ import classNames from 'classnames'
 import styles from './index.module.scss'
 
 import DOMPurify from 'dompurify'
+import highlight from 'highlight.js'
+import 'highlight.js/styles/github.css'
 
 import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
@@ -23,6 +25,33 @@ const Article = () => {
   }, [dispatch, params])
 
   const { detail } = useSelector((state: RootState) => state.article)
+
+  // 文章详情 代码内容 高亮
+  useEffect(() => {
+    const dgHtmlDOM = document.querySelector('.dg-html')
+    const codes = dgHtmlDOM?.querySelectorAll<HTMLElement>('pre code')
+    // console.log(codes)
+    if (codes && codes.length > 0) {
+      codes.forEach((el) => {
+        // 让每个 code 内容实现代码高亮
+        highlight.highlightElement(el)
+      })
+      return
+    }
+
+    highlight.configure({
+      // 忽略警告
+      ignoreUnescapedHTML: true
+    })
+
+    // 直接找到所有的 pre 标签
+    const pres = dgHtmlDOM?.querySelectorAll('pre')
+    if (pres && pres.length > 0) {
+      pres.forEach((el) => {
+        highlight.highlightElement(el)
+      })
+    }
+  }, [detail])
 
   const loadMoreComments = async () => {
     console.log('加载更多评论')

@@ -4785,6 +4785,11 @@
   "resolved" "https://registry.npmjs.org/he/-/he-1.2.0.tgz"
   "version" "1.2.0"
 
+"highlight.js@^11.4.0":
+  "integrity" "sha512-nawlpCBCSASs7EdvZOYOYVkJpGmAOKMYZgZtUqSRqodZE0GRVcFKwo1RcpeOemqh9hyttTdd5wDBwHkuSyUfnA=="
+  "resolved" "https://registry.npmjs.org/highlight.js/-/highlight.js-11.4.0.tgz"
+  "version" "11.4.0"
+
 "history@^5.2.0":
   "integrity" "sha512-uPSF6lAJb3nSePJ43hN3eKj1dTWpN9gMod0ZssbFTIsen+WehTmEadgL+kg78xLJFdRfrrC//SavDzmRVdE+Ig=="
   "resolved" "https://registry.npmjs.org/history/-/history-5.2.0.tgz"
