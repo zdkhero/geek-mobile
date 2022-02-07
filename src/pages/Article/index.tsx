@@ -12,9 +12,11 @@ import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import getArticleById from '@/store/actions/article'
 import { RootState } from '@/types/store'
+// 导入 lodash 的节流函数
+import throttle from 'lodash/throttle'
 
 const Article = () => {
   const navigate = useNavigate()
@@ -22,6 +24,17 @@ const Article = () => {
   const params = useParams<{ id: string }>()
   // 表示文章是否加载中的状态
   const [loading, setLoading] = useState(true)
+  // 创建文章可滚动区域的ref对象
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  // 创建导航栏作者信息的ref对象
+  const authorRef = useRef<HTMLDivElement>(null)
+  // 控制导航栏中作者信息的展示和隐藏
+  const [isShowNavAuthor, setIsShowNavAuthor] = useState(false)
+
+  /**
+   * 导航栏高度的常量
+   */
+  const NAV_BAR_HEIGTH = 45
 
   useEffect(() => {
     const load = async () => {
@@ -36,15 +49,15 @@ const Article = () => {
   // 文章详情 代码内容 高亮
   useEffect(() => {
     const dgHtmlDOM = document.querySelector('.dg-html')
-    // const codes = dgHtmlDOM?.querySelectorAll<HTMLElement>('pre code')
-    // console.log(codes)
-    // if (codes && codes.length > 0) {
-    //   codes.forEach((el) => {
-    //     // 让每个 code 内容实现代码高亮
-    //     highlight.highlightElement(el)
-    //   })
-    //   return
-    // }
+    const codes = dgHtmlDOM?.querySelectorAll<HTMLElement>('pre code')
+    console.log(codes)
+    if (codes && codes.length > 0) {
+      codes.forEach((el) => {
+        // 让每个 code 内容实现代码高亮
+        highlight.highlightElement(el)
+      })
+      return
+    }
 
     highlight.configure({
       // 忽略警告
@@ -59,6 +72,34 @@ const Article = () => {
       })
     }
   }, [detail])
+
+  // 给文章详情可滚动区域绑定滚动事件
+  useEffect(() => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+    const author = authorRef.current
+    if (!author) return
+
+    // 此处，通过节流函数 throttle 来降低滚动事件的触发频率
+    const onScroll = throttle(() => {
+      // console.log('滚动了', author.getBoundingClientRect().top)
+      // height 表示：自己的高度
+      // top 表示：距离页面顶部的距离
+      const { height, top } = author.getBoundingClientRect()
+      if (top <= NAV_BAR_HEIGTH - height) {
+        // console.log('展示在标题栏中')
+        setIsShowNavAuthor(true)
+      } else {
+        // console.log('从标题栏中隐藏')
+        setIsShowNavAuthor(false)
+      }
+    }, 100)
+
+    wrapper.addEventListener('scroll', onScroll)
+    return () => {
+      wrapper.removeEventListener('scroll', onScroll)
+    }
+  }, [loading])
 
   const loadMoreComments = async () => {
     console.log('加载更多评论')
@@ -112,7 +153,7 @@ const Article = () => {
 
     // 文章详情
     return (
-      <div className="wrapper">
+      <div className="wrapper" ref={wrapperRef}>
         <div className="article-wrapper">
           <div className="header">
             <h1 className="title">{title}</h1>
@@ -123,7 +164,7 @@ const Article = () => {
               <span>{comm_count} 评论</span>
             </div>
 
-            <div className="author">
+            <div className="author" ref={authorRef}>
               <img src={aut_photo || 'http://geek.itheima.net/images/user_head.jpg'} alt="" />
               <span className="name">{aut_name}</span>
               <span className={classNames('follow', is_followed ? 'followed' : '')}>{true ? '已关注' : '关注'}</span>
@@ -168,7 +209,7 @@ const Article = () => {
             </span>
           }
         >
-          {true && (
+          {isShowNavAuthor && (
             <div className="nav-author">
               <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
               <span className="name">黑马先锋</span>

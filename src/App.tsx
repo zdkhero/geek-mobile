@@ -43,11 +43,11 @@ function App() {
               }
             ></Route>
           </Route>
-          <Route path="article/:id" element={<Article />}></Route>
-          <Route path="search" element={<Search />}></Route>
-          <Route path="search/result" element={<SearchResult />}></Route>
         </Route>
 
+        <Route path="/article/:id" element={<Article />}></Route>
+        <Route path="/search" element={<Search />}></Route>
+        <Route path="/search/result" element={<SearchResult />}></Route>
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
