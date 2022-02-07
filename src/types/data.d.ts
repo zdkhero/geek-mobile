@@ -74,6 +74,23 @@ export type SearchResult = {
   results: ArticleList['results']
 }
 
+export type ArticleDetail = {
+  art_id: string
+  title: string
+  pubdate: string
+  aut_id: string
+  aut_name: string
+  aut_photo: string
+  is_followed: boolean
+  attitude: number
+  content: string
+  is_collected: boolean
+  // 接口中缺失
+  comm_count: number
+  like_count: number
+  read_count: number
+}
+
 // 统一处理axios响应类型：
 // login 接口的响应类型
 export type LoginResponse = ApiResponse<Token>
@@ -93,3 +110,4 @@ export type ArticlesResponse = ApiResponse<ArticleList>
 // 搜索建议列表
 export type SuggestionResponse = ApiResponse<Suggestion>
 export type SearchResultResponse = ApiResponse<SearchResult>
+export type ArticleDetailResponse = ApiResponse<ArticleDetail>

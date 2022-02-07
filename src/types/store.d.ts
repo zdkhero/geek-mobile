@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk'
 import store from '@/store'
 
-import type { Token, User, Channel } from './data'
+import type { Token, User, Channel, ArticleDetail, Suggestion, UserProfile } from './data'
 
 // Redux 应用的状态
 type RootState = ReturnType<typeof store.getState>
@@ -78,7 +78,12 @@ export type SearchAction =
   | { type: 'search/clearSuggestion' }
   | { type: 'search/getSearchResult'; payload: SearchResult }
 
+export type ArticleAction = {
+  type: 'article/get'
+  payload: ArticleDetail
+}
+
 // 文章相关的 action 类型
 
 // 项目中所有 action 类型
-type RootAction = LoginAction | ProfileAction | HomeAction | SearchAction
+type RootAction = LoginAction | ProfileAction | HomeAction | SearchAction | ArticleAction

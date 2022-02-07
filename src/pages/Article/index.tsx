@@ -1,14 +1,27 @@
 import { NavBar, InfiniteScroll } from 'antd-mobile'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
 
 import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import getArticleById from '@/store/actions/article'
+import { RootState } from '@/types/store'
 
 const Article = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const params = useParams<{ id: string }>()
+
+  useEffect(() => {
+    dispatch(getArticleById(params.id as string))
+  }, [dispatch, params])
+
+  const { detail } = useSelector((state: RootState) => state.article)
+  console.log(detail)
 
   const loadMoreComments = async () => {
     console.log('加载更多评论')
