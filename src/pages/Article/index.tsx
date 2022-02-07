@@ -29,15 +29,15 @@ const Article = () => {
   // 文章详情 代码内容 高亮
   useEffect(() => {
     const dgHtmlDOM = document.querySelector('.dg-html')
-    const codes = dgHtmlDOM?.querySelectorAll<HTMLElement>('pre code')
+    // const codes = dgHtmlDOM?.querySelectorAll<HTMLElement>('pre code')
     // console.log(codes)
-    if (codes && codes.length > 0) {
-      codes.forEach((el) => {
-        // 让每个 code 内容实现代码高亮
-        highlight.highlightElement(el)
-      })
-      return
-    }
+    // if (codes && codes.length > 0) {
+    //   codes.forEach((el) => {
+    //     // 让每个 code 内容实现代码高亮
+    //     highlight.highlightElement(el)
+    //   })
+    //   return
+    // }
 
     highlight.configure({
       // 忽略警告
